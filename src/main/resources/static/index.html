@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Flight Offers</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        .loading {
+            display: none;
+            font-weight: bold;
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Expedia Flight Offers</h2>
+
+    <div class="row">
+        <div class="col-md-5">
+            <label for="originCity">Origin City:</label>
+            <input type="text" id="originCity" class="form-control" placeholder="Enter Origin City">
+        </div>
+        <div class="col-md-5">
+            <label for="destinationCity">Destination City:</label>
+            <input type="text" id="destinationCity" class="form-control" placeholder="Enter Destination City">
+        </div>
+        <div class="col-md-2 d-grid">
+            <button class="btn btn-primary mt-4" onclick="fetchFlights()">Find Flights</button>
+        </div>
+    </div>
+
+    <p class="loading mt-3">Fetching flight offers, please wait...</p>
+    <div id="result" class="mt-4"></div>
+</div>
+
+<script>
+    function fetchFlights() {
+        var origin = $("#originCity").val().trim();
+        var destination = $("#destinationCity").val().trim();
+
+        $(".error-message").remove();
+        $("#originCity, #destinationCity").removeClass("is-invalid");
+        $("#result").empty();
+        $(".loading").show();
+
+        let isValid = true;
+        if (!origin) {
+            $("#originCity").addClass("is-invalid")
+                .after("<div class='error-message text-danger'>Origin City is required.</div>");
+            isValid = false;
+        }
+
+        if (!destination) {
+            $("#destinationCity").addClass("is-invalid")
+                .after("<div class='error-message text-danger'>Destination City is required.</div>");
+            isValid = false;
+        }
+
+        if (!isValid) {
+            $(".loading").hide();
+            return;
+        }
+
+        $.ajax({
+            url: "http://localhost:8085/expedia/flight-offers",
+            method: "GET",
+            data: { origin: origin, destination: destination },
+            success: function(response, status, xhr) {
+                $(".loading").hide();
+
+                var offers = response.offers?.Flight;
+
+
+                if (offers.length === 0) {
+                    $("#result").html("<p class='text-danger fw-bold'>No flights found for the given route.</p>");
+                    return;
+                }
+
+                var resultHTML = '<div class="row">';
+                offers.forEach(function(offer) {
+                    resultHTML += `
+            <div class="col-md-4 mb-3">
+                <div class="card">
+                    <img src="${offer.destination?.image || 'default.jpg'}" class="card-img-top" alt="Destination">
+                    <div class="card-body">
+                        <h5 class="card-title">${offer.destination?.displayDestination || 'Unknown Destination'}</h5>
+                        <p><strong>Carrier:</strong> ${offer.flightInfo?.flightDealCarrierName || 'N/A'}</p>
+                        <p><strong>Trip Type:</strong> ${offer.flightInfo?.tripType || 'N/A'}</p>
+                        <p><strong>Price:</strong> ${offer.flightPricingInfo?.formattedTotalPriceValue || 'N/A'}</p>
+                        <p><strong>Travel Date:</strong> ${offer.offerDateRange?.formattedTravelStartDate || 'N/A'} to ${offer.offerDateRange?.formattedTravelEndDate || 'N/A'}</p>
+                        <a href="${offer.flightUrls?.decodedFlightSearchUrl || '#'}" class="btn btn-primary" target="_blank">Book Now</a>
+                    </div>
+                </div>
+            </div>`;
+                });
+
+                resultHTML += '</div>';
+                $("#result").html(resultHTML);
+            }
+
+        });
+    }
+</script>
+
+</body>
+</html>
