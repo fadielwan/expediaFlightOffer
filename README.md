@@ -33,6 +33,7 @@ The frontend is built using HTML, CSS (Bootstrap), and JavaScript (jQuery), whil
 
 ### Sample request
 -Origin City: Dubai
+
 -Destination City: Doha
 
 ### Swagger API
