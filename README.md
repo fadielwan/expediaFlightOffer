@@ -30,6 +30,13 @@ The frontend is built using HTML, CSS (Bootstrap), and JavaScript (jQuery), whil
 ### Frontend
 - A modern browser with JavaScript and jQuery support
 - Bootstrap for styling
+
+### Sample request
+-Origin City: Dubai
+-Destination City: Doha
+
+### Swagger API
+http://localhost:8085/swagger-ui/index.html#
  '
 
 
