@@ -25,7 +25,7 @@ The frontend is built using HTML, CSS (Bootstrap), and JavaScript (jQuery), whil
 - Java 17
 - Maven for dependency management
 - Spring Boot
-- A running server or API (e.g., Expedia API, simulated service)
+- Expedia API called usign feign client spring boot
 
 ### Frontend
 - A modern browser with JavaScript and jQuery support
