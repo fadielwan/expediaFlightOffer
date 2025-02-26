@@ -1,4 +1,4 @@
-![ajou_logo](https://github.com/user-attachments/assets/9d785179-adcb-46a9-89f0-d851940e8764)# Expedia Flight Offers Web Application
+# Expedia Flight Offers Web Application
 
 ## Overview
 This project consists of two main components:
