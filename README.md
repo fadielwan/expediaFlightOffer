@@ -1,4 +1,4 @@
-# Expedia Flight Offers Web Application
+![ajou_logo](https://github.com/user-attachments/assets/9d785179-adcb-46a9-89f0-d851940e8764)# Expedia Flight Offers Web Application
 
 ## Overview
 This project consists of two main components:
@@ -32,9 +32,11 @@ The frontend is built using HTML, CSS (Bootstrap), and JavaScript (jQuery), whil
 - Bootstrap for styling
 
 ### Sample request
--Origin City: Dubai
+-Origin City: Chicago
 
--Destination City: Doha
+-Destination City: Miami
+
+![image](https://github.com/user-attachments/assets/035e1771-e868-452d-80ed-904a14ecae94)
 
 ### Swagger API
 http://localhost:8085/swagger-ui/index.html#
