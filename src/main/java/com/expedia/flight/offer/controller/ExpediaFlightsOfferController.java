@@ -45,7 +45,7 @@ public class ExpediaFlightsOfferController {
 
         } catch (Exception e) {
             logger.error("Unexpected error while fetching flight offers", e);
-            return ResponseEntity.status(HttpStatus.BAD_GATEWAY).build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
 
     }
