@@ -37,6 +37,16 @@
 </div>
 
 <script>
+    function formatDate(dateArray) {
+        if (!dateArray || dateArray.length !== 3) return 'N/A';
+
+        const [year, month, day] = dateArray;
+        const formattedDate = new Date(year, month - 1, day);
+        const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
+
+        return formattedDate.toLocaleDateString('en-US', options);
+    }
+
     function fetchFlights() {
         var origin = $("#originCity").val().trim();
         var destination = $("#destinationCity").val().trim();
@@ -73,7 +83,6 @@
 
                 var offers = response.offers?.Flight;
 
-
                 if (offers.length === 0) {
                     $("#result").html("<p class='text-danger fw-bold'>No flights found for the given route.</p>");
                     return;
@@ -81,26 +90,34 @@
 
                 var resultHTML = '<div class="row">';
                 offers.forEach(function(offer) {
+                    const travelStartDate = formatDate(offer.offerDateRange?.travelStartDate);
+                    const travelEndDate = formatDate(offer.offerDateRange?.travelEndDate);
+                    const lengthOfStay = offer.offerDateRange?.lengthOfStay || 'N/A';
+
                     resultHTML += `
-            <div class="col-md-4 mb-3">
-                <div class="card">
-                    <img src="${offer.destination?.image || 'default.jpg'}" class="card-img-top" alt="Destination">
-                    <div class="card-body">
-                        <h5 class="card-title">${offer.destination?.displayDestination || 'Unknown Destination'}</h5>
-                        <p><strong>Carrier:</strong> ${offer.flightInfo?.flightDealCarrierName || 'N/A'}</p>
-                        <p><strong>Trip Type:</strong> ${offer.flightInfo?.tripType || 'N/A'}</p>
-                        <p><strong>Price:</strong> ${offer.flightPricingInfo?.formattedTotalPriceValue || 'N/A'}</p>
-                        <p><strong>Travel Date:</strong> ${offer.offerDateRange?.formattedTravelStartDate || 'N/A'} to ${offer.offerDateRange?.formattedTravelEndDate || 'N/A'}</p>
-                        <a href="${offer.flightUrls?.decodedFlightSearchUrl || '#'}" class="btn btn-primary" target="_blank">Book Now</a>
-                    </div>
-                </div>
-            </div>`;
+                    <div class="col-md-4 mb-3">
+                        <div class="card">
+                            <img src="${offer.destination?.image || 'default.jpg'}" class="card-img-top" alt="Destination">
+                            <div class="card-body">
+                                <h5 class="card-title">${offer.destination?.displayDestination || 'Unknown Destination'}</h5>
+                                <p><strong>Carrier:</strong> ${offer.flightInfo?.flightDealCarrierName || 'N/A'}</p>
+                                <p><strong>Trip Type:</strong> ${offer.flightInfo?.tripType || 'N/A'}</p>
+                                <p><strong>Price:</strong> ${offer.flightPricingInfo?.formattedTotalPriceValue || 'N/A'}</p>
+                                <p><strong>Travel Date:</strong> ${travelStartDate} to ${travelEndDate}</p>
+                                <p><strong>Length of Stay:</strong> ${lengthOfStay} days</p>
+                                <a href="${offer.flightUrls?.decodedFlightSearchUrl || '#'}" class="btn btn-primary" target="_blank">Book Now</a>
+                            </div>
+                        </div>
+                    </div>`;
                 });
 
                 resultHTML += '</div>';
                 $("#result").html(resultHTML);
+            },
+            error: function() {
+                $(".loading").hide();
+                $("#result").html("<p class='text-danger fw-bold'>An error occurred while fetching flight offers. Please try again later.</p>");
             }
-
         });
     }
 </script>
