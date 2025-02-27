@@ -17,6 +17,7 @@ The frontend is built using HTML, CSS (Bootstrap), and JavaScript (jQuery), whil
   - Trip type
   - Price
   - Travel start and end dates
+  - Link of stay
   - A link to book the flight
 
 ## Prerequisites
