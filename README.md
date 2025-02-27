@@ -39,9 +39,8 @@ The frontend is built using HTML, CSS (Bootstrap), and JavaScript (jQuery), whil
 
 ![image](https://github.com/user-attachments/assets/035e1771-e868-452d-80ed-904a14ecae94)
 
+### Link project
+http://localhost:8085
+
 ### Swagger API
 http://localhost:8085/swagger-ui/index.html#
- '
-
-
-
